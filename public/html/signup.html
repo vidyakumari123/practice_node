@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>REGISTER HERE</h1>
+    <form action="" id="form">
+        <table>
+            <tr>
+                <td>Username</td>
+                <td><input type="text" name="username" ></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="email" name="email" ></td>
+            </tr>
+            <tr>
+                <td>Mobile</td>
+                <td><input type="number" name="mobile" ></td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td>
+                    <input type="radio" name="gender" value="male">Male
+                    <input type="radio" name="gender" value="female">Female
+                </td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="password" ></td>
+            </tr>
+            <tr>
+                <td>Confirm Password</td>
+                <td><input type="password" name="conpassword" ></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button>Register</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <script>
+        let form=document.getElementById("form")
+        let userDetails={}
+
+        form.addEventListener("input",(e)=>{
+            let value=e.target.value;
+            let name=e.target.name
+            userDetails[name]=value
+
+        })
+
+        form.addEventListener("submit",(e)=>{
+            e.preventDefault()
+            const {password,username,email,mobile,conpassword,gender} =userDetails
+            if(username && email && mobile && gender && password && conpassword){
+                if(password===conpassword){
+                    fetch("/newuser",{
+                        method:"POST",
+                        headers:{"content-type":"application/json"},
+                        body:JSON.stringify(userDetails)
+                    })
+                    .then((data)=>data.json())
+                    .then(data=>alert(data.msg))
+                    .catch(err=>console.log(err))
+                }
+                else{
+                    alert("Passwords not matching")
+                }
+            }
+            else{
+                alert("Fill every field before submit")
+            }
+        })
+    </script>
+
+
+</body>
+</html>
